@@ -2,51 +2,92 @@ module.exports = function (grunt) {
     'use strict';
 
     grunt.initConfig({
-            pkg: grunt.file.readJSON('package.json'),
+        pkg: grunt.file.readJSON('package.json'),
 
-            clean: ['build'],
+        clean: ['build'],
 
-            jshint: {
-                dist: {
-                    src: ['src/**/*.js']
-                }
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
             },
 
-            concat: {
-                dist: {
-                    src: ['<%= jshint.dist.src %>'],
-                    dest: 'build/<%= pkg.name%>.js'
-                }
+            dist: {
+                src: ['js/dist/**/*.js']
             },
 
-            uglify: {
+            specs: {
+                src: ['js/specs/**/*.js']
+            }
+        },
+
+        connect: {
+            server: {
                 options: {
-                    banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-                },
-
-                build: {
-                    src: 'build/<%= pkg.name %>.js',
-                    dest: 'build/<%= pkg.name %>.min.js'
+                    port: 10001,
+                    keepalive: true,
+                    base: 'www'
                 }
             },
 
-            connect: {
-                server: {
-                    options: {
-                        port: 10000
-                    }
+            testServer: {
+                options: {
+                    port: 10000
                 }
             }
-        }
-    )
-    ;
+        },
 
+        jasmine: {
+            src: '<%= jshint.dist.src %>',
+
+            options: {
+                host: 'http://localhost:10000',
+                specs: '<%= jshint.specs.src %>',
+                junit: {
+                    path: 'build/'
+                }
+            }
+        },
+
+        concat: {
+            dist: {
+                src: ['<%= jshint.dist.src %>'],
+                dest: 'build/<%= pkg.name%>.js'
+            }
+        },
+
+        uglify: {
+            dist: {
+                src: 'build/<%= pkg.name %>.js',
+                dest: 'build/<%= pkg.name %>.min.js'
+            }
+        },
+
+        copy: {
+            dist: {
+                src: '<%= uglify.dist.dest %>',
+                dest: 'www/js/<%= pkg.name %>.min.js'
+            }
+        },
+
+        watch: {
+            options: {
+                livereload: true
+            },
+            files: ['<%= connect.server.options.base %>/index.html', '<%= jshint.dist.src %>'],
+            tasks: ['compile']
+        }
+    });
+
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
-}
-;
+    grunt.registerTask('test', ['connect:testServer', 'jasmine']);
+    grunt.registerTask('compile', ['jshint', 'concat', 'uglify', 'copy']);
+    grunt.registerTask('default', ['test', 'compile']);
+};

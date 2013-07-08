@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+
+  <testsuite name="Hello" errors="0" tests="2" failures="0" time="0.015" timestamp="2013-07-08T07:26:49.280Z">
+    
+      <testcase assertions="1" classname="Hello" name="should do something" time="0.011">
+        
+      </testcase>
+    
+      <testcase assertions="1" classname="Hello" name="should do something else" time="0.001">
+        
+      </testcase>
+    
+  </testsuite>
+
+</testsuites>
