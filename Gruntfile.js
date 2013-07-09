@@ -23,14 +23,6 @@ module.exports = function (grunt) {
         connect: {
             server: {
                 options: {
-                    port: 10001,
-                    keepalive: true,
-                    base: 'www'
-                }
-            },
-
-            testServer: {
-                options: {
                     port: 10000
                 }
             }
@@ -43,7 +35,7 @@ module.exports = function (grunt) {
                 host: 'http://localhost:10000',
                 specs: '<%= jshint.specs.src %>',
                 junit: {
-                    path: 'build/'
+                    path: 'build'
                 }
             }
         },
@@ -62,18 +54,11 @@ module.exports = function (grunt) {
             }
         },
 
-        copy: {
-            dist: {
-                src: '<%= uglify.dist.dest %>',
-                dest: 'www/js/<%= pkg.name %>.min.js'
-            }
-        },
-
         watch: {
             options: {
                 livereload: true
             },
-            files: ['<%= connect.server.options.base %>/index.html', '<%= jshint.dist.src %>'],
+            files: ['index.html', '<%= jshint.dist.src %>'],
             tasks: ['compile']
         }
     });
@@ -87,7 +72,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('test', ['connect:testServer', 'jasmine']);
-    grunt.registerTask('compile', ['jshint', 'concat', 'uglify', 'copy']);
+    grunt.registerTask('livereload', ['connect', 'watch']);
+    grunt.registerTask('test', ['connect', 'jasmine']);
+    grunt.registerTask('compile', ['clean', 'jshint', 'concat', 'uglify']);
     grunt.registerTask('default', ['test', 'compile']);
 };
