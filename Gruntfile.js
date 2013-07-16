@@ -54,6 +54,16 @@ module.exports = function (grunt) {
             }
         },
 
+        rev: {
+            options: {
+                length: 8
+            },
+
+            files: {
+                src: '<%= uglify.dist.dest %>'
+            }    
+        },
+
         watch: {
             options: {
                 livereload: true
@@ -71,9 +81,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-rev');
 
     grunt.registerTask('livereload', ['connect', 'watch']);
     grunt.registerTask('test', ['connect', 'jasmine']);
-    grunt.registerTask('compile', ['clean', 'jshint', 'concat', 'uglify']);
+    grunt.registerTask('compile', ['clean', 'jshint', 'concat', 'uglify', 'rev']);
     grunt.registerTask('default', ['test', 'compile']);
 };
