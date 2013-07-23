@@ -8,13 +8,17 @@
 <body>
 <div class="container-fluid">
     <h1>This is a heading</h1>
-    <div class="row-fluid">
 
+    <div class="row-fluid">
         <div data-ng-controller="HelloController" class="span4">
-            <div>
-                Hi
-                <input type="button" data-ng-click="showAlert()" value="Danger">
-            </div>  <span data-ng-bind="message"></span>
+            <span>There are</span>
+            <span data-ng-bind="family.fathers.length"></span>
+            <span>fathers!</span>
+            <br>
+            <ul>
+                <li data-ng-repeat="father in family.fathers" data-ng-bind="father.name">
+                </li>
+            </ul>
         </div>
     </div>
 </div>

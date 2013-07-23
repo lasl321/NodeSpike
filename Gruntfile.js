@@ -12,7 +12,11 @@ module.exports = function (grunt) {
             },
 
             dist: {
-                src: ['js/dist/**/*.js']
+                src: [
+                    'js/dist/globals.js',
+                    'js/dist/controllers/**/*.js',
+                    'js/dist/modules/**/*.js'
+                ]
             },
 
             specs: {
@@ -61,7 +65,7 @@ module.exports = function (grunt) {
 
             files: {
                 src: '<%= uglify.dist.dest %>'
-            }    
+            }
         },
 
         watch: {
@@ -85,6 +89,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('livereload', ['connect', 'watch']);
     grunt.registerTask('test', ['connect', 'jasmine']);
-    grunt.registerTask('compile', ['clean', 'jshint', 'concat', 'uglify', 'rev']);
+    grunt.registerTask('compile', ['clean', 'jshint', 'concat', 'uglify']);
     grunt.registerTask('default', ['test', 'compile']);
 };

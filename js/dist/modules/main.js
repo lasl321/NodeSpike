@@ -1,19 +1,7 @@
-(function (window) {
+(function (angular, controllers) {
     'use strict';
 
-    var angular = window.angular,
-        module = angular.module('main', []);
+    var module = angular.module('main', ['dataAccess']);
 
-    module.controller('HelloController', ['$scope', HelloController]);
-
-    function showAlert() {
-        window.console.log('Wow');
-        window.alert('wow!');
-    }
-
-    function HelloController($scope) {
-        $scope.message = 'Hi, this is a message';
-
-        $scope.showAlert = showAlert;
-    }
-}(window));
+    module.controller('HelloController', controllers.HelloController);
+}(window.angular, window.controllers));

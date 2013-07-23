@@ -1,0 +1,148 @@
+{
+    "fathers": [
+        {
+            "id": 0,
+            "married": false,
+            "name": "Charles White",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 7,
+                    "name": "Patricia"
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "married": false,
+            "name": "Larry Thomas",
+            "sons": null,
+            "daughters": [
+            ]
+        },
+        {
+            "id": 2,
+            "married": false,
+            "name": "Larry Smith",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 26,
+                    "name": "Helen"
+                },
+                {
+                    "age": 29,
+                    "name": "Kimberly"
+                },
+                {
+                    "age": 12,
+                    "name": "Dorothy"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "married": false,
+            "name": "Mark Miller",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 26,
+                    "name": "Sandra"
+                },
+                {
+                    "age": 23,
+                    "name": "Carol"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "married": false,
+            "name": "George Hall",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 4,
+                    "name": "Linda"
+                },
+                {
+                    "age": 6,
+                    "name": "Donna"
+                },
+                {
+                    "age": 29,
+                    "name": "Patricia"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "married": false,
+            "name": "Scott Williams",
+            "sons": null,
+            "daughters": [
+            ]
+        },
+        {
+            "id": 6,
+            "married": true,
+            "name": "Jeffrey Davis",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 5,
+                    "name": "Kimberly"
+                },
+                {
+                    "age": 23,
+                    "name": "Cynthia"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "married": true,
+            "name": "Paul Wilson",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 16,
+                    "name": "Brenda"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "married": false,
+            "name": "Kenneth Martinez",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 29,
+                    "name": "Karen"
+                },
+                {
+                    "age": 9,
+                    "name": "Cynthia"
+                },
+                {
+                    "age": 7,
+                    "name": "Dorothy"
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "married": false,
+            "name": "Kenneth Robinson",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 12,
+                    "name": "Karen"
+                }
+            ]
+        }
+    ]
+}
