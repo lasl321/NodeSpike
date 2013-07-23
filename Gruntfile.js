@@ -38,9 +38,13 @@ module.exports = function (grunt) {
             options: {
                 host: 'http://localhost:10000',
                 specs: '<%= jshint.specs.src %>',
-                junit: {
-                    path: 'build'
-                }
+                vendor: [
+                    'bower_components/jquery/jquery.js',
+                    'bower_components/angular/angular.js',
+                    'bower_components/angular-resource/angular-resource.js',
+                    'bower_components/angular-mocks/angular-mocks.js'
+                ],
+                keepRunner: true
             }
         },
 
