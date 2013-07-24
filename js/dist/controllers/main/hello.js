@@ -3,6 +3,8 @@
 
     function HelloController($scope, Family) {
         $scope.family = Family.get();
+
+
     }
 
     HelloController.$inject = ['$scope', 'Family'];

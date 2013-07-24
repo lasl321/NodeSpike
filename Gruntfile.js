@@ -1,3 +1,4 @@
+/* jshint node:true*/
 module.exports = function (grunt) {
     'use strict';
 
@@ -9,6 +10,10 @@ module.exports = function (grunt) {
         jshint: {
             options: {
                 jshintrc: '.jshintrc'
+            },
+
+            build: {
+                src: ['Gruntfile.js']
             },
 
             dist: {
@@ -44,7 +49,7 @@ module.exports = function (grunt) {
                     'bower_components/angular-resource/angular-resource.js',
                     'bower_components/angular-mocks/angular-mocks.js'
                 ],
-                keepRunner: true
+                keepRunner: false
             }
         },
 
@@ -93,6 +98,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('livereload', ['connect', 'watch']);
     grunt.registerTask('test', ['connect', 'jasmine']);
-    grunt.registerTask('compile', ['clean', 'jshint', 'concat', 'uglify']);
+    grunt.registerTask('compile', ['clean', 'jshint', 'concat', 'uglify', 'rev']);
     grunt.registerTask('default', ['test', 'compile']);
 };
