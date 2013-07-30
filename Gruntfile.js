@@ -9,102 +9,119 @@ module.exports = function (grunt) {
     };
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+            pkg: grunt.file.readJSON('package.json'),
 
-        clean: [paths.build],
+            clean: [paths.build],
 
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc'
-            },
-
-            gruntfile: {
-                src: ['Gruntfile.js']
-            },
-
-            app: {
-                src: [
-                    paths.app + '/globals.js',
-                    paths.app + '/controllers/**/*.js',
-                    paths.app + '/modules/**/*.js'
-                ]
-            },
-
-            tests: {
-                src: paths.tests + '/**/*.js'
-            }
-        },
-
-        connect: {
-            server: {
+            jshint: {
                 options: {
-                    port: 10000
+                    jshintrc: '.jshintrc'
+                },
+
+                gruntfile: {
+                    src: ['Gruntfile.js']
+                },
+
+                app: {
+                    src: [
+                        paths.app + '/globals.js',
+                        paths.app + '/controllers/**/*.js',
+                        paths.app + '/modules/**/*.js'
+                    ]
+                },
+
+                tests: {
+                    src: paths.tests + '/**/*.js'
                 }
-            }
-        },
-
-        jasmine: {
-            src: '<%= jshint.app.src %>',
-
-            options: {
-                host: 'http://localhost:10000',
-                specs: '<%= jshint.tests.src %>',
-                vendor: [
-                    'bower_components/jquery/jquery.js',
-                    'bower_components/angular/angular.js',
-                    'bower_components/angular-resource/angular-resource.js',
-                    'bower_components/angular-mocks/angular-mocks.js'
-                ],
-                keepRunner: false
-            }
-        },
-
-        copy: {
-
-        },
-
-        useminPrepare: {
-            html: 'index.html',
-
-            options: {
-                dest: 'build'
-            }
-        },
-
-        usemin: {
-            html: ['*.html'],
-//            css: ['**/*.css'],
-            options: {
-                dirs: [paths.build]
-            }
-        },
-
-        rev: {
-            options: {
-                length: 8
             },
 
-            files: {
-                src: [
-                    'build/js/**/*.js',
-                    'build/styles/**/*.css'
-                ]
-            }
-        },
+            connect: {
+                build: {
+                    options: {
+                        port: 10000,
+                        base: paths.build,
+                        keepalive: true
+                    }
+                },
 
-        watch: {
-            options: {
-                livereload: true
+                dev: {
+                    options: {
+                        port: 10000
+                    }
+                }
             },
-            files: ['index.html', '<%= jshint.dist.src %>'],
-            tasks: ['compile']
+
+            jasmine: {
+                src: '<%= jshint.app.src %>',
+
+                options: {
+                    host: 'http://localhost:10000',
+                    specs: '<%= jshint.tests.src %>',
+                    vendor: [
+                        'bower_components/jquery/jquery.js',
+                        'bower_components/angular/angular.js',
+                        'bower_components/angular-resource/angular-resource.js',
+                        'bower_components/angular-mocks/angular-mocks.js'
+                    ],
+                    keepRunner: false
+                }
+            },
+
+            useminPrepare: {
+                html: 'index.html',
+
+                options: {
+                    dest: paths.build
+                }
+            },
+
+            copy: {
+                html: {
+                    expand: true,
+                    src: '*.html',
+                    dest: paths.build
+                }
+            },
+
+            rev: {
+                options: {
+                    length: 8
+                },
+
+                files: {
+                    src: [
+                        paths.build + '/js/**/*.js',
+                        paths.build + '/css/**/*.css'
+                    ]
+                }
+            },
+
+            usemin: {
+                html: [paths.build + '**/*.html'],
+                //      css: [paths.build + '**/*.css'],
+                options: {
+                    dirs: [paths.build]
+                }
+            },
+
+            watch: {
+                options: {
+                    livereload: true
+                },
+
+                files: ['index.html', '<%= jshint.app.src %>'],
+
+                tasks: ['compile']
+            }
         }
-    });
+    )
+    ;
 
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
@@ -112,8 +129,19 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-rev');
 
-    grunt.registerTask('livereload', ['connect', 'watch']);
-    grunt.registerTask('test', ['connect', 'jasmine']);
-    grunt.registerTask('compile', ['clean', 'jshint:app', 'useminPrepare', 'concat', 'uglify', 'rev']);
+    grunt.registerTask('server', ['compile', 'connect:build']);
+    grunt.registerTask('livereload', ['connect:dev', 'watch']);
+    grunt.registerTask('test', ['connect:dev', 'jasmine']);
+    grunt.registerTask('compile', [
+        'clean',
+        'jshint:app',
+        'useminPrepare',
+        'concat',
+        'uglify',
+        'cssmin',
+        'copy',
+        'rev',
+        'usemin'
+    ]);
     grunt.registerTask('default', ['test', 'compile']);
 };
