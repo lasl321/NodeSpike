@@ -2,30 +2,36 @@
 module.exports = function (grunt) {
     'use strict';
 
+    var paths = {
+        app: 'js/app',
+        tests: 'js/tests',
+        build: 'build'
+    };
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        clean: ['build'],
+        clean: [paths.build],
 
         jshint: {
             options: {
                 jshintrc: '.jshintrc'
             },
 
-            build: {
+            gruntfile: {
                 src: ['Gruntfile.js']
             },
 
-            dist: {
+            app: {
                 src: [
-                    'js/dist/globals.js',
-                    'js/dist/controllers/**/*.js',
-                    'js/dist/modules/**/*.js'
+                    paths.app + '/globals.js',
+                    paths.app + '/controllers/**/*.js',
+                    paths.app + '/modules/**/*.js'
                 ]
             },
 
-            specs: {
-                src: ['js/specs/**/*.js']
+            tests: {
+                src: paths.tests + '/**/*.js'
             }
         },
 
@@ -38,11 +44,11 @@ module.exports = function (grunt) {
         },
 
         jasmine: {
-            src: '<%= jshint.dist.src %>',
+            src: '<%= jshint.app.src %>',
 
             options: {
                 host: 'http://localhost:10000',
-                specs: '<%= jshint.specs.src %>',
+                specs: '<%= jshint.tests.src %>',
                 vendor: [
                     'bower_components/jquery/jquery.js',
                     'bower_components/angular/angular.js',
@@ -53,17 +59,23 @@ module.exports = function (grunt) {
             }
         },
 
-        concat: {
-            dist: {
-                src: ['<%= jshint.dist.src %>'],
-                dest: 'build/<%= pkg.name%>.js'
+        copy: {
+
+        },
+
+        useminPrepare: {
+            html: 'index.html',
+
+            options: {
+                dest: 'build'
             }
         },
 
-        uglify: {
-            dist: {
-                src: 'build/<%= pkg.name %>.js',
-                dest: 'build/<%= pkg.name %>.min.js'
+        usemin: {
+            html: ['*.html'],
+//            css: ['**/*.css'],
+            options: {
+                dirs: [paths.build]
             }
         },
 
@@ -73,7 +85,10 @@ module.exports = function (grunt) {
             },
 
             files: {
-                src: '<%= uglify.dist.dest %>'
+                src: [
+                    'build/js/**/*.js',
+                    'build/styles/**/*.css'
+                ]
             }
         },
 
@@ -94,10 +109,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-rev');
 
     grunt.registerTask('livereload', ['connect', 'watch']);
     grunt.registerTask('test', ['connect', 'jasmine']);
-    grunt.registerTask('compile', ['clean', 'jshint', 'concat', 'uglify', 'rev']);
+    grunt.registerTask('compile', ['clean', 'jshint:app', 'useminPrepare', 'concat', 'uglify', 'rev']);
     grunt.registerTask('default', ['test', 'compile']);
 };
